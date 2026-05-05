@@ -1,0 +1,27 @@
+/* WHY: Host + chrome are non-targets; slotted views and overlay children use `pointer-events: auto`. */
+@layer shell.overrides {
+    :host([data-shell="content"]) {
+        pointer-events: none;
+        background: transparent;
+    }
+
+    :host([data-shell="content"]):has(> .app-shell) {
+        --shell-bg: transparent;
+    }
+
+    :host([data-shell="content"]) .app-shell,
+    :host([data-shell="content"]) .app-shell__viewport,
+    :host([data-shell="content"]) .app-shell__content {
+        pointer-events: none;
+    }
+
+    /* Light-DOM view roots (`slot="view"`) stay clickable; empty shell remains pass-through. */
+    :host([data-shell="content"]) ::slotted([data-view]) {
+        pointer-events: auto;
+    }
+
+    /* Dialogs / modals under `[data-shell-overlays]` */
+    :host([data-shell="content"]) .app-shell__overlays > * {
+        pointer-events: auto;
+    }
+}

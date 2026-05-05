@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>content-shell demo (HTTPS) — host page + transparent overlay</title>
+    </head>
+    <body>
+        <div id="page-underlay">
+            <article>
+                <div class="demo-harness">
+                    <button type="button" id="demo-theme">Theme</button>
+                    <button type="button" id="demo-toast">Test toast</button>
+                    <button type="button" id="demo-open-modal">Test modal</button>
+                    <span class="demo-hint">Harness lives in host DOM — not inside the shell.</span>
+                </div>
+                <h1>Host page content (under the extension)</h1>
+                <p>
+                    This scroll area mimics a real page under a transparent content script shell. Clicks on empty overlay
+                    regions fall through to here; the markdown viewer in the shell only captures over its own UI.
+                </p>
+                <div id="demo-context-zone">Right-click here for a host-level context menu (custom, not the browser menu).</div>
+                <figure class="demo-figure">
+                    <img
+                        src="https://picsum.photos/seed/crx-content-shell/960/520"
+                        width="960"
+                        height="520"
+                        alt="Sample image on the host page"
+                    />
+                    <figcaption>Image loads on the host layer (picsum.photos) — unaffected by shell mount/teardown.</figcaption>
+                </figure>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                    ex ea commodo consequat.
+                </p>
+                <figure class="demo-figure">
+                    <img src="https://picsum.photos/seed/host-page-2/960/400" width="960" height="400" alt="Second sample" />
+                    <figcaption>Extra imagery to force scrolling while the overlay shell stays fixed.</figcaption>
+                </figure>
+                <p>
+                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+                    laborum.
+                </p>
+            </article>
+        </div>
+        <main id="app"></main>
+        <ul id="demo-context-menu" role="menu" aria-label="Demo context menu">
+            <li><button type="button" role="menuitem" data-demo-menu="copy">Copy placeholder</button></li>
+            <li><button type="button" role="menuitem" data-demo-menu="note">Add note…</button></li>
+        </ul>
+        <dialog id="demo-modal" class="demo-modal">
+            <p>Modal from the host harness. It blocks interaction with the page until closed, without touching shell internals.</p>
+            <button type="button" id="demo-modal-close">Close</button>
+        </dialog>
+        <script type="module" src="/demo/boot.ts"></script>
+    </body>
+</html>

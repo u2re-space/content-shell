@@ -1,11 +1,18 @@
 import type { ShellId, ShellLayoutConfig } from "shells/types";
-import { WindowShell } from "shells/window";
+import { ImmersiveShell } from "shells/immersive/index";
+
+// @ts-ignore — bundled as literal CSS for shadow root
+import immersiveStyle from "../../immersive-shell/src/base.scss?inline";
+// @ts-ignore
+import contentOverrides from "./content-overrides.scss?inline";
 
 /**
- * Content shell: CRX/content-script focused host.
- * It keeps window/task behavior but never mounts desktop chrome bars.
+ * Content shell: CRX / content-script host.
+ * Chromeless like ImmersiveShell, but allows multi-view routing like window/content-script UX.
+ * INVARIANT: `cw-shell-content` and in-shadow chrome use `pointer-events: none`; only slotted views,
+ * shell overlay children (modals), and document-level toasts/context UI opt into hits.
  */
-export class ContentShell extends WindowShell {
+export class ContentShell extends ImmersiveShell {
     layout: ShellLayoutConfig = {
         hasSidebar: false,
         hasToolbar: false,
@@ -17,8 +24,31 @@ export class ContentShell extends WindowShell {
     id: ShellId = "content";
     name = "Content";
 
-    protected shouldRenderDesktopChrome(): boolean {
-        return false;
+    protected getStylesheet(): string | null {
+        return `${immersiveStyle}${contentOverrides}`;
+    }
+
+    protected renderView(element: HTMLElement): void {
+        super.renderView(element);
+        element.style.pointerEvents = "auto";
+    }
+
+    async mount(container: HTMLElement): Promise<void> {
+        await super.mount(container);
+        const root = this.rootElement;
+        if (root) {
+            root.style.pointerEvents = "none";
+        }
+        const viewport = root?.shadowRoot?.querySelector(".app-shell__viewport") as HTMLElement | null;
+        if (viewport) {
+            viewport.style.pointerEvents = "none";
+        }
+        if (this.contentContainer) {
+            this.contentContainer.style.pointerEvents = "none";
+        }
+        if (this.overlayContainer) {
+            this.overlayContainer.style.pointerEvents = "none";
+        }
     }
 }
 

@@ -1,0 +1,295 @@
+/*
+ * Host underlay for content-shell HTTPS demo: follows `Theme.ts` /
+ * `syncBrowserChromeTheme` (`html[data-theme="light"|"dark"]`, `color-scheme`).
+ */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    height: 100%;
+    /* Light tokens until `data-theme` or prefers-color-scheme block applies. */
+    --demo-body-bg: #f1f5f9;
+    --demo-host-bg: linear-gradient(165deg, #eef2ff 0%, #fce7f3 45%, #e0f2fe 100%);
+    --demo-text: #0f172a;
+    --demo-muted: #475569;
+    --demo-hint: #64748b;
+    --demo-harness-bg: rgba(255, 255, 255, 0.85);
+    --demo-harness-border: rgba(15, 23, 42, 0.08);
+    --demo-btn-bg: #fff;
+    --demo-btn-border: rgba(15, 23, 42, 0.15);
+    --demo-btn-hover: #f8fafc;
+    --demo-btn-text: #0f172a;
+    --demo-figure-bg: #fff;
+    --demo-figure-border: rgba(15, 23, 42, 0.12);
+    --demo-ctx-bg: rgba(99, 102, 241, 0.08);
+    --demo-ctx-border: rgba(79, 70, 229, 0.45);
+    --demo-menu-bg: #fff;
+    --demo-menu-border: rgba(15, 23, 42, 0.12);
+    --demo-menu-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+    --demo-menu-item-hover: #f1f5f9;
+    --demo-menu-item-text: #0f172a;
+    --demo-modal-backdrop: rgba(15, 23, 42, 0.45);
+    --demo-modal-surface: #fff;
+    --demo-modal-text: #0f172a;
+    --demo-modal-btn-border: rgba(15, 23, 42, 0.2);
+}
+
+html[data-theme="dark"] {
+    --demo-body-bg: #0b0f14;
+    --demo-host-bg: linear-gradient(165deg, #0f172a 0%, #1e1b4b 40%, #134e4a 100%);
+    --demo-text: #e2e8f0;
+    --demo-muted: #94a3b8;
+    --demo-hint: #94a3b8;
+    --demo-harness-bg: rgba(15, 23, 42, 0.88);
+    --demo-harness-border: rgba(148, 163, 184, 0.15);
+    --demo-btn-bg: #1e293b;
+    --demo-btn-border: rgba(148, 163, 184, 0.25);
+    --demo-btn-hover: #334155;
+    --demo-btn-text: #e2e8f0;
+    --demo-figure-bg: #1e293b;
+    --demo-figure-border: rgba(148, 163, 184, 0.2);
+    --demo-ctx-bg: rgba(99, 102, 241, 0.15);
+    --demo-ctx-border: rgba(129, 140, 248, 0.5);
+    --demo-menu-bg: #1e293b;
+    --demo-menu-border: rgba(148, 163, 184, 0.2);
+    --demo-menu-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    --demo-menu-item-hover: #334155;
+    --demo-menu-item-text: #e2e8f0;
+    --demo-modal-backdrop: rgba(0, 0, 0, 0.65);
+    --demo-modal-surface: #1e293b;
+    --demo-modal-text: #e2e8f0;
+    --demo-modal-btn-border: rgba(148, 163, 184, 0.3);
+}
+
+/* Before `applyTheme` runs: match OS. */
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme]) {
+        --demo-body-bg: #0b0f14;
+        --demo-host-bg: linear-gradient(165deg, #0f172a 0%, #1e1b4b 40%, #134e4a 100%);
+        --demo-text: #e2e8f0;
+        --demo-muted: #94a3b8;
+        --demo-hint: #94a3b8;
+        --demo-harness-bg: rgba(15, 23, 42, 0.88);
+        --demo-harness-border: rgba(148, 163, 184, 0.15);
+        --demo-btn-bg: #1e293b;
+        --demo-btn-border: rgba(148, 163, 184, 0.25);
+        --demo-btn-hover: #334155;
+        --demo-btn-text: #e2e8f0;
+        --demo-figure-bg: #1e293b;
+        --demo-figure-border: rgba(148, 163, 184, 0.2);
+        --demo-ctx-bg: rgba(99, 102, 241, 0.15);
+        --demo-ctx-border: rgba(129, 140, 248, 0.5);
+        --demo-menu-bg: #1e293b;
+        --demo-menu-border: rgba(148, 163, 184, 0.2);
+        --demo-menu-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        --demo-menu-item-hover: #334155;
+        --demo-menu-item-text: #e2e8f0;
+        --demo-modal-backdrop: rgba(0, 0, 0, 0.65);
+        --demo-modal-surface: #1e293b;
+        --demo-modal-text: #e2e8f0;
+        --demo-modal-btn-border: rgba(148, 163, 184, 0.3);
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    html:not([data-theme]) {
+        --demo-body-bg: #f1f5f9;
+        --demo-host-bg: linear-gradient(165deg, #eef2ff 0%, #fce7f3 45%, #e0f2fe 100%);
+        --demo-text: #0f172a;
+        --demo-muted: #475569;
+        --demo-hint: #64748b;
+        --demo-harness-bg: rgba(255, 255, 255, 0.85);
+        --demo-harness-border: rgba(15, 23, 42, 0.08);
+        --demo-btn-bg: #fff;
+        --demo-btn-border: rgba(15, 23, 42, 0.15);
+        --demo-btn-hover: #f8fafc;
+        --demo-btn-text: #0f172a;
+        --demo-figure-bg: #fff;
+        --demo-figure-border: rgba(15, 23, 42, 0.12);
+        --demo-ctx-bg: rgba(99, 102, 241, 0.08);
+        --demo-ctx-border: rgba(79, 70, 229, 0.45);
+        --demo-menu-bg: #fff;
+        --demo-menu-border: rgba(15, 23, 42, 0.12);
+        --demo-menu-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+        --demo-menu-item-hover: #f1f5f9;
+        --demo-menu-item-text: #0f172a;
+        --demo-modal-backdrop: rgba(15, 23, 42, 0.45);
+        --demo-modal-surface: #fff;
+        --demo-modal-text: #0f172a;
+        --demo-modal-btn-border: rgba(15, 23, 42, 0.2);
+    }
+}
+
+body {
+    margin: 0;
+    min-height: 100%;
+    font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+    background: var(--demo-body-bg);
+    color: var(--demo-text);
+}
+
+#page-underlay {
+    position: fixed;
+    inset: 0;
+    overflow: auto;
+    z-index: 0;
+    background: var(--demo-host-bg);
+    color: var(--demo-text);
+    pointer-events: auto;
+}
+
+#page-underlay article {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 8rem;
+    line-height: 1.55;
+}
+
+#page-underlay h1 {
+    font-size: 1.75rem;
+    margin-block-end: 0.5rem;
+}
+
+#page-underlay .demo-figure {
+    margin: 1.5rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--demo-figure-border);
+    background: var(--demo-figure-bg);
+}
+
+#page-underlay .demo-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    vertical-align: middle;
+}
+
+#page-underlay .demo-figure figcaption {
+    padding: 0.65rem 1rem;
+    font-size: 0.85rem;
+    color: var(--demo-muted);
+}
+
+.demo-harness {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.75rem 0;
+    margin-block-end: 1rem;
+    background: var(--demo-harness-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    border: 1px solid var(--demo-harness-border);
+}
+
+.demo-harness button {
+    padding: 0.4rem 0.75rem;
+    border-radius: 8px;
+    border: 1px solid var(--demo-btn-border);
+    background: var(--demo-btn-bg);
+    color: var(--demo-btn-text);
+    cursor: pointer;
+    font: inherit;
+}
+
+.demo-harness button:hover {
+    background: var(--demo-btn-hover);
+}
+
+.demo-harness .demo-hint {
+    font-size: 0.85rem;
+    align-self: center;
+    color: var(--demo-hint);
+}
+
+#demo-context-zone {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 2px dashed var(--demo-ctx-border);
+    background: var(--demo-ctx-bg);
+    cursor: context-menu;
+}
+
+#app {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483000;
+    pointer-events: none;
+    min-height: 100dvh;
+}
+
+#demo-context-menu {
+    position: fixed;
+    z-index: 2147483646;
+    min-width: 10rem;
+    padding: 0.35rem;
+    margin: 0;
+    list-style: none;
+    background: var(--demo-menu-bg);
+    color: var(--demo-menu-item-text);
+    border: 1px solid var(--demo-menu-border);
+    border-radius: 10px;
+    box-shadow: var(--demo-menu-shadow);
+    display: none;
+    pointer-events: auto;
+}
+
+#demo-context-menu[data-open="true"] {
+    display: block;
+}
+
+#demo-context-menu button {
+    display: block;
+    width: 100%;
+    text-align: start;
+    padding: 0.45rem 0.6rem;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+}
+
+#demo-context-menu button:hover {
+    background: var(--demo-menu-item-hover);
+}
+
+.demo-modal::backdrop {
+    background: var(--demo-modal-backdrop);
+    backdrop-filter: blur(3px);
+}
+
+.demo-modal {
+    max-width: 24rem;
+    padding: 1.25rem;
+    border: none;
+    border-radius: 14px;
+    box-shadow: var(--demo-menu-shadow);
+    pointer-events: auto;
+    background: var(--demo-modal-surface);
+    color: var(--demo-modal-text);
+}
+
+.demo-modal p {
+    margin: 0 0 1rem;
+}
+
+.demo-modal button {
+    font: inherit;
+    padding: 0.45rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--demo-modal-btn-border);
+    cursor: pointer;
+    background: #6366f1;
+    color: #fff;
+}
