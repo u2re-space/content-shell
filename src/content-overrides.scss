@@ -15,13 +15,29 @@
         pointer-events: none;
     }
 
-    /* Light-DOM view roots (`slot="view"`) stay clickable; empty shell remains pass-through. */
+    /* Nav chrome is part of the viewport stack; keep it targetable while host/viewport pass through. */
+    :host([data-shell="content"]) .app-shell__nav {
+        pointer-events: auto;
+    }
+
+    /* Light-DOM view roots (default / unnamed slot) stay clickable; empty shell remains pass-through. */
     :host([data-shell="content"]) ::slotted([data-view]) {
         pointer-events: auto;
     }
 
-    /* Dialogs / modals under `[data-shell-overlays]` */
-    :host([data-shell="content"]) .app-shell__overlays > * {
+    /*
+     * Optional: set `data-content-views="hidden"` on the shell host to keep routed views invisible
+     * until a tool (e.g. snipping) sets `data-content-views="visible"`.
+     */
+    :host([data-shell="content"][data-content-views="hidden"]) ::slotted([data-view]) {
+        visibility: hidden;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    /* Dialogs / menus / tooltips: light-DOM `slot="overlay"` or shadow-appended nodes under overlays. */
+    :host([data-shell="content"]) .app-shell__overlays > *,
+    :host([data-shell="content"]) .app-shell__overlays > slot::slotted(*) {
         pointer-events: auto;
     }
 }

@@ -10,7 +10,10 @@ import contentOverrides from "./content-overrides.scss?inline";
  * Content shell: CRX / content-script host.
  * Chromeless like ImmersiveShell, but allows multi-view routing like window/content-script UX.
  * INVARIANT: `cw-shell-content` and in-shadow chrome use `pointer-events: none`; only slotted views,
- * shell overlay children (modals), and document-level toasts/context UI opt into hits.
+ * overlay-layer children, and document-level toasts/context UI opt into hits.
+ *
+ * Layers (shadow): no `underlying` slot — only default content + `overlay` (see {@link SHELL_SLOT}).
+ * Optional host flag `data-content-views="hidden"` hides routed views until a tool sets `"visible"` (e.g. snipping).
  */
 export class ContentShell extends ImmersiveShell {
     layout: ShellLayoutConfig = {
@@ -23,6 +26,11 @@ export class ContentShell extends ImmersiveShell {
 
     id: ShellId = "content";
     name = "Content";
+
+    /** INVARIANT: Over page content only — no wallpaper/canvas `underlying` layer. */
+    protected includeUnderlyingSlot(): boolean {
+        return false;
+    }
 
     protected getStylesheet(): string | null {
         return `${immersiveStyle}${contentOverrides}`;
