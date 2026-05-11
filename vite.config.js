@@ -2,6 +2,7 @@
  * Content shell HTTPS demo (transparent overlay + host-page harness).
  * Default port 443 + `certs/cert.pem` + `certs/key.pem` via shared helper (falls back to @vitejs/plugin-basic-ssl).
  */
+import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import basicSsl from "@vitejs/plugin-basic-ssl";
 import { defineConfig, searchForWorkspaceRoot } from "vite";
@@ -29,6 +30,15 @@ const serverHttps = !useHttps ? false : projectSsl !== null ? projectSsl : undef
 
 const viteDevOrigin = (process.env.VITE_DEV_ORIGIN || "").trim();
 
+const fsAllow = [
+    searchForWorkspaceRoot(pkgRoot),
+    workspaceRoot,
+    viewsRoot,
+    resolve(workspaceRoot, "modules/views"),
+    shellsRoot
+];
+if (existsSync(crosswordFrontend)) fsAllow.push(crosswordFrontend);
+
 export default defineConfig({
     root: pkgRoot,
     plugins,
@@ -43,14 +53,7 @@ export default defineConfig({
         ...(viteDevOrigin ? { origin: viteDevOrigin } : {}),
         https: serverHttps,
         fs: {
-            allow: [
-                searchForWorkspaceRoot(pkgRoot),
-                workspaceRoot,
-                viewsRoot,
-                crosswordFrontend,
-                resolve(workspaceRoot, "modules/views"),
-                shellsRoot
-            ]
+            allow: fsAllow
         }
     },
     build: {
