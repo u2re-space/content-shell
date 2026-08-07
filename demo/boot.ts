@@ -3,7 +3,7 @@
  * Overlays (toast, modal, context menu) live outside the shell mount so they do not replace host DOM.
  */
 import "./demo-host-theme.css";
-import "fest/icon";
+import "@fest-lib/icon";
 import { bootContent } from "boot/ts/BootLoader";
 import { showToast } from "boot/ts/toast";
 import { applyTheme, initTheme } from "core/utils/Theme";
